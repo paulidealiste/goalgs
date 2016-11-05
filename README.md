@@ -1,2 +1,3 @@
 # goalgs
-Working repository of the ongoing effort to implement common and not-so common algorithms in the wonderful language of Go! 
+________
+Common and not-so common algorithms implemented in Go!
