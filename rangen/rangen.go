@@ -1,4 +1,4 @@
-// Package rangen is a utility package for creating slices of random numbers.
+//rangen is a utility package for creating slices of random numbers.
 package rangen
 
 import (
@@ -8,7 +8,7 @@ import (
 )
 
 //Gorands utilizes the Go standard library uniform random generators.
-func Gorands(fixed int, gauss bool) []float64 {
+func Gorands(fixed int, gauss bool, scaler float64) []float64 {
 	var randslice []float64
 	source := rand.NewSource(time.Now().UnixNano())
 	randomer := rand.New(source)
@@ -19,9 +19,9 @@ func Gorands(fixed int, gauss bool) []float64 {
 	}
 	for i := 0; i < len(randslice); i++ {
 		if gauss == true {
-			randslice[i] = math.Abs(randomer.NormFloat64())
+			randslice[i] = math.Abs(randomer.NormFloat64()) * scaler
 		} else {
-			randslice[i] = math.Abs(randomer.Float64())
+			randslice[i] = math.Abs(randomer.Float64()) * scaler
 		}
 	}
 	return randslice
