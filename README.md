@@ -8,6 +8,6 @@ ___________________________
 ### Algorithm list by group
 - Sorting
   * Insertion
-  * Merge (non-functional - one number not sorted)
+  * Merge (non-functional - one number not sorted)    
 ___________________________
 The output from the goalgs is printed in the standard output with the coloring help from [color](github.com/fatih/color) go package.
