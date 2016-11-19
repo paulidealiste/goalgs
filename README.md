@@ -9,10 +9,12 @@ ___________________________
 - Sorting
   * Bubble
   * Insertion
-  * Merge (bug - one number not sorted)    
+  * Merge
+- Extremes    
+  * One of local extremes
 
 #### Available utilities
   * Random numbers by Box-Muller transform    
-    
+
 ___________________________    
 The output from the goalgs is printed in the standard output with the coloring help from [color](https://github.com/fatih/color) go package.
