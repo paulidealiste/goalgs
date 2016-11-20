@@ -9,7 +9,7 @@ import (
 	"github.com/paulidealiste/goalgs/utilgen"
 )
 
-type Localextreme struct {
+type Extreme struct {
 	index    int
 	value    float64
 	min, max bool
@@ -22,52 +22,96 @@ func Maximumsubarray(inslice []float64) []float64 {
 	return inslice
 }
 
-// Onelocalextreme finds either/or one of called for of local extremes and returns the corresponding
-// array of structs representing original index, the value of the detected local extreme and the flag
-// indicating the type of the extreme.
-func Onelocalextreme(inslice []float64) []Localextreme {
-	defer utilgen.Timetracker(time.Now(), "Onelocalextreme")
-	var outslice []Localextreme
-	outslice = Onelocalextrememin(inslice, 0, len(inslice)-1, outslice)
-	outslice = Onelocalextrememax(inslice, 0, len(inslice)-1, outslice)
+// Findminmax proceeds to find global extremes of the supplied array returning them as structs
+// representing original index, the vaue of the extreme and the flag indicating the extreme type.
+func Findminmax(inslice []float64) []Extreme {
+	defer utilgen.Timetracker(time.Now(), "Findminmax")
+	min := Extreme{0, 0, true, false}
+	max := Extreme{0, 0, false, true}
+	onefindmax(inslice, 0, len(inslice)-1, &max)
+	onefindmin(inslice, 0, len(inslice)-1, &min)
+	outslice := []Extreme{min, max}
 	return outslice
 }
 
-func Onelocalextrememin(inslice []float64, p int, r int, outslice []Localextreme) []Localextreme {
+func onefindmax(inslice []float64, p int, r int, max *Extreme) {
+	if p == r {
+		max.index = p
+		max.value = inslice[p]
+	} else {
+		onefindmax(inslice, p+1, r, max)
+		if inslice[p] > max.value {
+			max.index = p
+			max.value = inslice[p]
+		} else {
+			max = max
+		}
+	}
+}
+
+func onefindmin(inslice []float64, p int, r int, min *Extreme) {
+	if p == r {
+		min.index = p
+		min.value = inslice[p]
+	} else {
+		onefindmin(inslice, p+1, r, min)
+		if inslice[p] < min.value {
+			min.index = p
+			min.value = inslice[p]
+		} else {
+			min = min
+		}
+	}
+}
+
+// Findlocalminmax finds either/or a list of called for local extremes and returns the corresponding
+// array of structs representing original index, the value of the detected local extreme and the flag
+// indicating the type of the extreme.
+func Findlocalminmax(inslice []float64) []Extreme {
+	defer utilgen.Timetracker(time.Now(), "Findlocalminmax")
+	var outslice []Extreme
+	outslice = onelocalextrememin(inslice, 0, len(inslice)-1, outslice)
+	outslice = onelocalextrememax(inslice, 0, len(inslice)-1, outslice)
+	return outslice
+}
+
+func onelocalextrememin(inslice []float64, p int, r int, outslice []Extreme) []Extreme {
 	q := int(math.Floor(float64((p + r) / 2)))
 	if p <= r && q != r-1 && q > 1 {
 		if inslice[q] <= inslice[q-1] && inslice[q] <= inslice[q+1] {
-			locex := Localextreme{q, inslice[q], true, false}
+			locex := Extreme{q, inslice[q], true, false}
 			outslice = append(outslice, locex)
+			return onelocalextrememin(inslice, p, q, outslice)
 		}
 		if inslice[q-1] >= inslice[q] && inslice[q] >= inslice[q+1] {
-			Onelocalextrememin(inslice, q, r, outslice)
+			return onelocalextrememin(inslice, q, r, outslice)
 		}
 		if inslice[q+1] >= inslice[q] && inslice[q] >= inslice[q-1] {
-			Onelocalextrememin(inslice, p, q, outslice)
+			return onelocalextrememin(inslice, p, q, outslice)
 		}
 		if inslice[q-1] <= inslice[q] && inslice[q+1] <= inslice[q] {
-			Onelocalextrememin(inslice, q, r, outslice)
+			return onelocalextrememin(inslice, q, r, outslice)
 		}
 	}
 	return outslice
 }
 
-func Onelocalextrememax(inslice []float64, p int, r int, outslice []Localextreme) []Localextreme {
+func onelocalextrememax(inslice []float64, p int, r int, outslice []Extreme) []Extreme {
 	q := int(math.Floor(float64((p + r) / 2)))
 	if p <= r && q != r-1 && q > 1 {
 		if inslice[q] >= inslice[q-1] && inslice[q] >= inslice[q+1] {
-			locex := Localextreme{q, inslice[q], false, true}
+			locex := Extreme{q, inslice[q], false, true}
 			outslice = append(outslice, locex)
+			return onelocalextrememax(inslice, q, r, outslice)
 		}
 		if inslice[q-1] <= inslice[q] && inslice[q] <= inslice[q+1] {
-			Onelocalextrememax(inslice, q, r, outslice)
+			return onelocalextrememax(inslice, q, r, outslice)
 		}
 		if inslice[q+1] <= inslice[q] && inslice[q] <= inslice[q-1] {
-			Onelocalextrememax(inslice, p, q, outslice)
+			return onelocalextrememax(inslice, p, q, outslice)
 		}
 		if inslice[q-1] >= inslice[q] && inslice[q+1] >= inslice[q] {
-			Onelocalextrememax(inslice, q, r, outslice)
+			return onelocalextrememax(inslice, q, r, outslice)
 		}
 	}
 	return outslice
@@ -75,9 +119,9 @@ func Onelocalextrememax(inslice []float64, p int, r int, outslice []Localextreme
 
 // Benchmarks and tests
 
-func BenchmarkOnelocalextreme(b *testing.B) {
+func BenchmarkFindlocalminmax(b *testing.B) {
 	ta := []float64{9.0, 7.0, 7.0, 2.0, 1.0, 2.0, 7.0, 5.0, 4.0, 7.0, 3.0, 4.0, 4.0, 8.0, 6.0, 9.0}
 	for i := 0; i < b.N; i++ {
-		Onelocalextreme(ta)
+		Findlocalminmax(ta)
 	}
 }
