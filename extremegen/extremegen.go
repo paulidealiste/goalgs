@@ -2,7 +2,6 @@
 package extremegen
 
 import (
-	"math"
 	"testing"
 	"time"
 
@@ -69,55 +68,42 @@ func onefindmin(inslice []float64, p int, r int, min *Extreme) {
 // indicating the type of the extreme.
 func Findlocalminmax(inslice []float64) []Extreme {
 	defer utilgen.Timetracker(time.Now(), "Findlocalminmax")
-	var outslice []Extreme
-	outslice = onelocalextrememin(inslice, 0, len(inslice)-1, outslice)
-	outslice = onelocalextrememax(inslice, 0, len(inslice)-1, outslice)
+	outslice := make([]Extreme, 0)
+	outslice = onelocalextrememin(inslice, 1, len(inslice)-1, outslice)
+	outslice = onelocalextrememax(inslice, 1, len(inslice)-1, outslice)
 	return outslice
 }
 
 func onelocalextrememin(inslice []float64, p int, r int, outslice []Extreme) []Extreme {
-	q := int(math.Floor(float64((p + r) / 2)))
-	if p <= r && q != r-1 && q > 1 {
-		if inslice[q] <= inslice[q-1] && inslice[q] <= inslice[q+1] {
-			locex := Extreme{q, inslice[q], true, false}
+	if p < r {
+		if inslice[p] <= inslice[p-1] && inslice[p] <= inslice[p+1] {
+			locex := Extreme{p, inslice[p], true, false}
 			outslice = append(outslice, locex)
-			return onelocalextrememin(inslice, p, q, outslice)
 		}
-		if inslice[q-1] >= inslice[q] && inslice[q] >= inslice[q+1] {
-			return onelocalextrememin(inslice, q, r, outslice)
-		}
-		if inslice[q+1] >= inslice[q] && inslice[q] >= inslice[q-1] {
-			return onelocalextrememin(inslice, p, q, outslice)
-		}
-		if inslice[q-1] <= inslice[q] && inslice[q+1] <= inslice[q] {
-			return onelocalextrememin(inslice, q, r, outslice)
-		}
+		return onelocalextrememin(inslice, p+1, r, outslice)
 	}
 	return outslice
 }
 
 func onelocalextrememax(inslice []float64, p int, r int, outslice []Extreme) []Extreme {
-	q := int(math.Floor(float64((p + r) / 2)))
-	if p <= r && q != r-1 && q > 1 {
-		if inslice[q] >= inslice[q-1] && inslice[q] >= inslice[q+1] {
-			locex := Extreme{q, inslice[q], false, true}
+	if p < r {
+		if inslice[p] >= inslice[p-1] && inslice[p] >= inslice[p+1] {
+			locex := Extreme{p, inslice[p], true, false}
 			outslice = append(outslice, locex)
-			return onelocalextrememax(inslice, q, r, outslice)
 		}
-		if inslice[q-1] <= inslice[q] && inslice[q] <= inslice[q+1] {
-			return onelocalextrememax(inslice, q, r, outslice)
-		}
-		if inslice[q+1] <= inslice[q] && inslice[q] <= inslice[q-1] {
-			return onelocalextrememax(inslice, p, q, outslice)
-		}
-		if inslice[q-1] >= inslice[q] && inslice[q+1] >= inslice[q] {
-			return onelocalextrememax(inslice, q, r, outslice)
-		}
+		return onelocalextrememax(inslice, p+1, r, outslice)
 	}
 	return outslice
 }
 
 // Benchmarks and tests
+
+func BenchmarkFindminmax(b *testing.B) {
+	ta := []float64{9.0, 7.0, 7.0, 2.0, 1.0, 2.0, 7.0, 5.0, 4.0, 7.0, 3.0, 4.0, 4.0, 8.0, 6.0, 9.0}
+	for i := 0; i < b.N; i++ {
+		Findminmax(ta)
+	}
+}
 
 func BenchmarkFindlocalminmax(b *testing.B) {
 	ta := []float64{9.0, 7.0, 7.0, 2.0, 1.0, 2.0, 7.0, 5.0, 4.0, 7.0, 3.0, 4.0, 4.0, 8.0, 6.0, 9.0}

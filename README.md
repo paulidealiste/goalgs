@@ -12,7 +12,7 @@ ___________________________
   * Merge
 - Extremes    
   * Global extremes
-  * Some of local extremes
+  * All of local extremes
 
 #### Available utilities
   * Random numbers by Box-Muller transform    
