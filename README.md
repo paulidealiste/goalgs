@@ -13,6 +13,7 @@ ___________________________
 - Extremes    
   * Global extremes
   * All of local extremes
+  * Least and largest differences
 
 #### Available utilities
   * Random numbers by Box-Muller transform    
