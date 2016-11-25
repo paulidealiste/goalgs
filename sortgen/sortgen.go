@@ -13,14 +13,16 @@ import (
 // adjacent items thus sorting/swapping them if needed.
 func Bubblesort(inslice []float64) []float64 {
 	defer utilgen.Timetracker(time.Now(), "Bubblesort")
-	for i := 0; i < len(inslice); i++ {
-		for j := len(inslice) - 1; j >= i+1; j-- {
-			if inslice[j] < inslice[j-1] {
-				utilgen.Swapitems(inslice[j-1 : j+1])
+	outslice := make([]float64, len(inslice))
+	copy(outslice, inslice)
+	for i := 0; i < len(outslice); i++ {
+		for j := len(outslice) - 1; j >= i+1; j-- {
+			if outslice[j] < outslice[j-1] {
+				utilgen.Swapitems(outslice[j-1 : j+1])
 			}
 		}
 	}
-	return inslice
+	return outslice
 }
 
 // Insertsort utilizes the insertion sort algorithm which proceeds by iteration where
@@ -29,16 +31,18 @@ func Bubblesort(inslice []float64) []float64 {
 // either one of the elements in the target array.
 func Insertsort(inslice []float64) []float64 {
 	defer utilgen.Timetracker(time.Now(), "Insertsort")
-	for j := 1; j < len(inslice); j++ {
-		key := inslice[j]
+	outslice := make([]float64, len(inslice))
+	copy(outslice, inslice)
+	for j := 1; j < len(outslice); j++ {
+		key := outslice[j]
 		i := j - 1
-		for i >= 0 && inslice[i] > key {
-			inslice[i+1] = inslice[i]
+		for i >= 0 && outslice[i] > key {
+			outslice[i+1] = outslice[i]
 			i = i - 1
 		}
-		inslice[i+1] = key
+		outslice[i+1] = key
 	}
-	return inslice
+	return outslice
 }
 
 // Mergesort is a dynamic top-level sorting function utilizing divide-and-conquer approach

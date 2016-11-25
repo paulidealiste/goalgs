@@ -2,9 +2,11 @@
 package extremegen
 
 import (
+	"math"
 	"testing"
 	"time"
 
+	"github.com/paulidealiste/goalgs/sortgen"
 	"github.com/paulidealiste/goalgs/utilgen"
 )
 
@@ -12,6 +14,39 @@ type Extreme struct {
 	index    int
 	value    float64
 	min, max bool
+}
+
+type ExtremeDiff struct {
+	index    []int
+	value    float64
+	values   []float64
+	min, max bool
+}
+
+// Extremediff finds the minimal and maximal difference between any two consequtive members of the
+// input array and returns the list of two struct element holding the relevant information
+func Extremediff(inslice []float64) []ExtremeDiff {
+	defer utilgen.Timetracker(time.Now(), "Leastdiff")
+	var outslice []ExtremeDiff
+	minDf := ExtremeDiff{nil, math.MaxFloat64, nil, true, false}
+	maxDf := ExtremeDiff{nil, 0.0, nil, false, true}
+	sortslice := sortgen.Insertsort(inslice)
+	for i := 0; i < len(sortslice)-1; i++ {
+		indiff := math.Abs(sortslice[i] - sortslice[i+1])
+		if indiff > maxDf.value {
+			maxDf.values = []float64{sortslice[i], sortslice[i+1]}
+			maxDf.value = indiff
+		}
+		if indiff < minDf.value {
+			minDf.values = []float64{sortslice[i], sortslice[i+1]}
+			minDf.value = indiff
+		}
+	}
+	minDf.index = utilgen.Retind(inslice, minDf.values)
+	maxDf.index = utilgen.Retind(inslice, maxDf.values)
+	outslice = append(outslice, minDf)
+	outslice = append(outslice, maxDf)
+	return outslice
 }
 
 // Maximumsubarray represents the algorithm for finding the nonempty subarray
@@ -97,6 +132,13 @@ func onelocalextrememax(inslice []float64, p int, r int, outslice []Extreme) []E
 }
 
 // Benchmarks and tests
+
+func BenchmarkExtremediff(b *testing.B) {
+	ta := []float64{9.0, 7.0, 7.0, 2.0, 1.0, 2.0, 7.0, 5.0, 4.0, 7.0, 3.0, 4.0, 4.0, 8.0, 6.0, 9.0}
+	for i := 0; i < b.N; i++ {
+		Extremediff(ta)
+	}
+}
 
 func BenchmarkFindminmax(b *testing.B) {
 	ta := []float64{9.0, 7.0, 7.0, 2.0, 1.0, 2.0, 7.0, 5.0, 4.0, 7.0, 3.0, 4.0, 4.0, 8.0, 6.0, 9.0}

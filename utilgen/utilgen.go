@@ -13,6 +13,24 @@ func Timetracker(start time.Time, fname string) {
 	fmt.Printf("Function %s ran for %s\n", fname, elapsed)
 }
 
+// Return indices of the elements in the supplied array
+func Retind(inslice []float64, elems []float64) []int {
+	if len(inslice) < 1 || len(elems) != 2 {
+		err := errors.New("Array of more than one element is required for inslice while a tuple is required for elems.")
+		panic(err)
+	}
+	var inind []int
+	for i, v := range inslice {
+		if v == elems[0] || v == elems[1] {
+			inind = append(inind, i)
+		}
+	}
+	if inind[1] > inind[0] {
+		inind[0], inind[1] = inind[1], inind[0]
+	}
+	return inind
+}
+
 // Swap items in the supplied slice/tuple which sould be a pair of values.
 func Swapitems(intuple []float64) ([]float64, error) {
 	if len(intuple) != 2 {
