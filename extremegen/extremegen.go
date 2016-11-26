@@ -23,6 +23,12 @@ type ExtremeDiff struct {
 	min, max bool
 }
 
+type ExtremeSlice struct {
+	index  []int
+	sum    float64
+	target []float64
+}
+
 // Extremediff finds the minimal and maximal difference between any two consequtive members of the
 // input array and returns the list of two struct element holding the relevant information
 func Extremediff(inslice []float64) []ExtremeDiff {
@@ -49,11 +55,62 @@ func Extremediff(inslice []float64) []ExtremeDiff {
 	return outslice
 }
 
-// Maximumsubarray represents the algorithm for finding the nonempty subarray
-// of a target array whose values have the largest sum.
-func Maximumsubarray(inslice []float64) []float64 {
+// Maxminsubarray represents the algorithm for finding the nonempty subarray
+// of a target array whose values have the largest/smallest sum.
+func Maxminsubarray(inslice []float64) []ExtremeSlice {
+	defer utilgen.Timetracker(time.Now(), "Maxminsubarray")
+	outslice := maxminsub(inslice)
+	return outslice
+}
 
-	return inslice
+func maxminsub(inslice []float64) []ExtremeSlice {
+	var outslice []ExtremeSlice
+	mmchan := make(chan ExtremeSlice, 1)
+	mnchan := make(chan ExtremeSlice, 1)
+	if len(inslice) > 1 {
+		go innersub(inslice, mmchan, false)
+		go innersub(inslice, mnchan, true)
+		outslice = append(outslice, <-mmchan)
+		outslice = append(outslice, <-mnchan)
+	} else {
+
+	}
+	return outslice
+}
+
+func innersub(inslice []float64, mmchan chan ExtremeSlice, ismin bool) {
+	var innerext ExtremeSlice
+	var (
+		cs   int
+		ce   int
+		csum float64
+	)
+	for ce != len(inslice) {
+		csum += inslice[ce]
+		if ismin == true {
+			if csum < innerext.sum {
+				innerext.index = []int{cs, ce}
+				innerext.target = inslice[cs:ce]
+				innerext.sum = csum
+			}
+			if csum > 0 {
+				cs = ce + 1
+				csum = 0
+			}
+		} else {
+			if csum > innerext.sum {
+				innerext.index = []int{cs, ce}
+				innerext.target = inslice[cs:ce]
+				innerext.sum = csum
+			}
+			if csum <= 0 {
+				cs = ce + 1
+				csum = 0
+			}
+		}
+		ce++
+	}
+	mmchan <- innerext
 }
 
 // Findminmax proceeds to find global extremes of the supplied array returning them as structs

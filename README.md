@@ -13,6 +13,7 @@ ___________________________
 - Extremes    
   * Global extremes
   * All of local extremes
+  * Maximum and minimum sum subarray
   * Least and largest differences
 
 #### Available utilities

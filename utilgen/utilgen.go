@@ -1,4 +1,5 @@
-// utilgen holds various utility function primarily for documenting the algs output and performance.
+// utilgen holds various utility function primarily for documenting the algs output and performance
+// as well as some common generic-like functions
 package utilgen
 
 import (
@@ -11,6 +12,19 @@ import (
 func Timetracker(start time.Time, fname string) {
 	elapsed := time.Since(start)
 	fmt.Printf("Function %s ran for %s\n", fname, elapsed)
+}
+
+//Sum of the supplied values
+func Sumfun(inpart []float64) float64 {
+	if len(inpart) < 1 {
+		err := errors.New("Input array must be at least two elements long.")
+		panic(err)
+	}
+	var outsum float64
+	for _, v := range inpart {
+		outsum = outsum + v
+	}
+	return outsum
 }
 
 // Return indices of the elements in the supplied array
