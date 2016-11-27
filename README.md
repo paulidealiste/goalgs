@@ -6,10 +6,12 @@ The app can be installed and built in any sensible Go envirnonment by running
     go get github.com/paulidealiste/goalgs
 ___________________________
 ### Algorithm list by group
-- Sort
-  * Bubble
-  * Insertion
-  * Merge
+- Sort and permutation
+  * Bubble sort
+  * Insertion sort
+  * Merge sort
+  * Random permutation by sort
+  * Random permutation in-place
 - Extremes    
   * Global extremes
   * All of local extremes

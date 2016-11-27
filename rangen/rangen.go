@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// Gorands utilizes the Go standard library uniform random generators.
+// Gorands wraps Go standard library uniform random generators (math.Rand).
 func Gorands(fixed int, gauss bool, scaler float64) []float64 {
 	var randslice []float64
 	source := rand.NewSource(time.Now().UnixNano())
@@ -25,6 +25,14 @@ func Gorands(fixed int, gauss bool, scaler float64) []float64 {
 		}
 	}
 	return randslice
+}
+
+// Gorpa generates l length array of unique random integers in [0, n] range useful for
+// creating the arrays of random priorities (wraps math.Rand permutation)
+func Gorpa(n int) []int { //TODO: re-implement by hand
+	source := rand.NewSource(time.Now().UnixNano())
+	randomer := rand.New(source)
+	return randomer.Perm(n)
 }
 
 // Boxmullerrands is a simple implementation of Box-Muller algorithm for generating

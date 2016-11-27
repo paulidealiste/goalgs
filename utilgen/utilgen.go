@@ -46,11 +46,11 @@ func Retind(inslice []float64, elems []float64) []int {
 }
 
 // Swap items in the supplied slice/tuple which sould be a pair of values.
-func Swapitems(intuple []float64) ([]float64, error) {
+func Swapitems(intuple []float64) []float64 {
 	if len(intuple) != 2 {
 		err := errors.New("Tuple (slice of length 2) is required for swapping.")
 		panic(err)
 	}
 	intuple[0], intuple[1] = intuple[1], intuple[0]
-	return intuple, nil
+	return intuple
 }

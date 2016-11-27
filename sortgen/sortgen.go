@@ -1,11 +1,12 @@
-// sortgen holds the implementations of the most common sorting algorithms.
+// sortgen holds the implementations of the most common sorting and permutation algorithms.
 package sortgen
 
 import (
 	"math"
-	"testing"
+	"math/rand"
 	"time"
 
+	"github.com/paulidealiste/goalgs/rangen"
 	"github.com/paulidealiste/goalgs/utilgen"
 )
 
@@ -88,25 +89,29 @@ func innermerge(inslice []float64, p int, q int, r int) []float64 {
 	return inslice
 }
 
-// Benchmarks and tests
-
-func BenchmarkInsertsort(b *testing.B) {
-	ta := []float64{10.0, 8.7, 6.3, 4.2, 9.2, 5.8, 3.1, 2.3, 1.1}
-	for i := 0; i < b.N; i++ {
-		Insertsort(ta)
+// Sortpermute performs randomization of input array elements by utilizing sorting
+// of the original array elments according to the array of random priorities.
+func Sortpermute(inslice []float64) []float64 {
+	defer utilgen.Timetracker(time.Now(), "Sortpermute")
+	outslice := make([]float64, len(inslice))
+	innerpriority := rangen.Gorpa(len(outslice))
+	for i, v := range innerpriority {
+		outslice[i] = inslice[v]
 	}
+	return outslice
 }
 
-func BenchmarkMergesort(b *testing.B) {
-	ta := []float64{10.0, 8.7, 6.3, 4.2, 9.2, 5.8, 3.1, 2.3, 1.1}
-	for i := 0; i < b.N; i++ {
-		Mergesort(ta, 0, len(ta))
+// Inplacepermute randomizes the order of the array elements by swapping randomly
+// chosen pairings during one traversing of the original, input array.
+func Inplacepermute(inslice []float64) []float64 {
+	defer utilgen.Timetracker(time.Now(), "Inplacepermute")
+	outslice := make([]float64, len(inslice))
+	copy(outslice, inslice)
+	source := rand.NewSource(time.Now().UnixNano())
+	randomer := rand.New(source)
+	for i := len(outslice) - 1; i > 0; i-- {
+		j := randomer.Intn(i)
+		outslice[i], outslice[j] = outslice[j], outslice[i]
 	}
-}
-
-func BenchmarkBubblesort(b *testing.B) {
-	ta := []float64{10.0, 8.7, 6.3, 4.2, 9.2, 5.8, 3.1, 2.3, 1.1}
-	for i := 0; i < b.N; i++ {
-		Bubblesort(ta)
-	}
+	return outslice
 }

@@ -3,7 +3,6 @@ package extremegen
 
 import (
 	"math"
-	"testing"
 	"time"
 
 	"github.com/paulidealiste/goalgs/sortgen"
@@ -186,27 +185,4 @@ func onelocalextrememax(inslice []float64, p int, r int, outslice []Extreme) []E
 		return onelocalextrememax(inslice, p+1, r, outslice)
 	}
 	return outslice
-}
-
-// Benchmarks and tests
-
-func BenchmarkExtremediff(b *testing.B) {
-	ta := []float64{9.0, 7.0, 7.0, 2.0, 1.0, 2.0, 7.0, 5.0, 4.0, 7.0, 3.0, 4.0, 4.0, 8.0, 6.0, 9.0}
-	for i := 0; i < b.N; i++ {
-		Extremediff(ta)
-	}
-}
-
-func BenchmarkFindminmax(b *testing.B) {
-	ta := []float64{9.0, 7.0, 7.0, 2.0, 1.0, 2.0, 7.0, 5.0, 4.0, 7.0, 3.0, 4.0, 4.0, 8.0, 6.0, 9.0}
-	for i := 0; i < b.N; i++ {
-		Findminmax(ta)
-	}
-}
-
-func BenchmarkFindlocalminmax(b *testing.B) {
-	ta := []float64{9.0, 7.0, 7.0, 2.0, 1.0, 2.0, 7.0, 5.0, 4.0, 7.0, 3.0, 4.0, 4.0, 8.0, 6.0, 9.0}
-	for i := 0; i < b.N; i++ {
-		Findlocalminmax(ta)
-	}
 }
