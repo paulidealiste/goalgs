@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/paulidealiste/goalgs/datagen"
 	"github.com/paulidealiste/goalgs/rangen"
 	"github.com/paulidealiste/goalgs/utilgen"
 )
@@ -87,6 +88,24 @@ func innermerge(inslice []float64, p int, q int, r int) []float64 {
 		}
 	}
 	return inslice
+}
+
+// Heapsort uses the max-heap data structure and proceeds from the root node of the heap
+// tree, which holds the largest element, while subsequently decreasing the heap.size
+// property leaving only ever smaller sub-max-heaps, until all the elements appear in the
+// sorted order reflecting the max-heap structure where each parent is larger that either
+// of its children.
+func Heapsort(inslice []float64) []float64 {
+	defer utilgen.Timetracker(time.Now(), "Heapsort")
+	innerslice := make([]float64, len(inslice))
+	copy(innerslice, inslice)
+	iheap := datagen.Heapgen(innerslice)
+	for i := iheap.Length; i >= 1; i-- {
+		iheap.Inslice[i], iheap.Inslice[0] = iheap.Inslice[0], iheap.Inslice[i]
+		iheap.Heapsize--
+		datagen.Maxheapmaintain(&iheap, 0)
+	}
+	return iheap.Inslice
 }
 
 // Sortpermute performs randomization of input array elements by utilizing sorting

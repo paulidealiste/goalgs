@@ -10,6 +10,7 @@ ___________________________
   * Bubble sort
   * Insertion sort
   * Merge sort
+  * Heap sort
   * Random permutation by sort
   * Random permutation in-place
 - Extremes    
@@ -17,6 +18,8 @@ ___________________________
   * All of local extremes
   * Maximum and minimum sum subarray
   * Least and largest differences
+- Data structures    
+  * Max-heap
 
 #### Available utilities
   * Random numbers by Box-Muller transform    

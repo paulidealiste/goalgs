@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/fatih/color"
+	"github.com/paulidealiste/goalgs/datagen"
 	"github.com/paulidealiste/goalgs/rangen"
 	"github.com/paulidealiste/goalgs/sortgen"
 )
@@ -11,7 +12,6 @@ import (
 func main() {
 	color.Yellow("Hello, goalgs!")
 	color.Yellow("--------------")
-	// tsl := rangen.Gorands(10, false, 10)
 	tsl := rangen.Boxmullerrands(20, 50, 100)
 	color.Cyan("Original slice")
 	fmt.Println(tsl)
@@ -25,13 +25,16 @@ func main() {
 	// msl := sortgen.Mergesort(tsl, 0, len(tsl))
 	// color.Cyan("Mergesorted slice")
 	// fmt.Println(msl)
-	color.Blue("goalgs random permutation algorithms")
-	color.Cyan("Randomize by sort")
-	rpsl := sortgen.Sortpermute(tsl)
-	fmt.Println(rpsl)
-	color.Cyan("Randomize in-place")
-	ppsl := sortgen.Inplacepermute(tsl)
-	fmt.Println(ppsl)
+	qsl := sortgen.Heapsort(tsl)
+	color.Cyan("Heapsorted slice")
+	fmt.Println(qsl)
+	// color.Blue("goalgs random permutation algorithms")
+	// color.Cyan("Randomize by sort")
+	// rpsl := sortgen.Sortpermute(tsl)
+	// fmt.Println(rpsl)
+	// color.Cyan("Randomize in-place")
+	// ppsl := sortgen.Inplacepermute(tsl)
+	// fmt.Println(ppsl)
 	// color.Magenta("goalgs extremes algorithms")
 	// gss := extremegen.Findminmax(tsl)
 	// color.Cyan("Global extremes")
@@ -45,4 +48,8 @@ func main() {
 	// sss := extremegen.Extremediff(tsl)
 	// color.Cyan("Extreme differences between two elements of array")
 	// fmt.Println(sss)
+	color.Green("goalgs data structures")
+	ssd := datagen.Heapgen(tsl)
+	color.Cyan("Slice representation as max-heap (.inslice of the struct)")
+	fmt.Println(ssd)
 }
