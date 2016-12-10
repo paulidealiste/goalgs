@@ -20,6 +20,7 @@ ___________________________
   * Least and largest differences
 - Data structures    
   * Max-heap
+  * Max-heap maintenace methods (max, extractmax, increasekey, insert)
 
 #### Available utilities
   * Random numbers by Box-Muller transform    

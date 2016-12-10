@@ -6,7 +6,6 @@ import (
 	"github.com/fatih/color"
 	"github.com/paulidealiste/goalgs/datagen"
 	"github.com/paulidealiste/goalgs/rangen"
-	"github.com/paulidealiste/goalgs/sortgen"
 )
 
 func main() {
@@ -25,9 +24,9 @@ func main() {
 	// msl := sortgen.Mergesort(tsl, 0, len(tsl))
 	// color.Cyan("Mergesorted slice")
 	// fmt.Println(msl)
-	qsl := sortgen.Heapsort(tsl)
-	color.Cyan("Heapsorted slice")
-	fmt.Println(qsl)
+	// qsl := sortgen.Heapsort(tsl)
+	// color.Cyan("Heapsorted slice")
+	// fmt.Println(qsl)
 	// color.Blue("goalgs random permutation algorithms")
 	// color.Cyan("Randomize by sort")
 	// rpsl := sortgen.Sortpermute(tsl)
@@ -52,4 +51,11 @@ func main() {
 	ssd := datagen.Heapgen(tsl)
 	color.Cyan("Slice representation as max-heap (.inslice of the struct)")
 	fmt.Println(ssd)
+	yellowprint := color.New(color.FgHiYellow)
+	yellowprint.Println("Heap maintenance methods")
+	fmt.Println("Heap max (.Maximum):", ssd.Maximum())
+	_, errormax := ssd.Extractmax()
+	fmt.Println("Heap extract max (.Extractmax):", ssd, errormax)
+	ssd.Insert(45.95)
+	fmt.Println("Heap insert (.Insert):", ssd)
 }

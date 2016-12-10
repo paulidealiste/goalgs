@@ -54,3 +54,14 @@ func Swapitems(intuple []float64) []float64 {
 	intuple[0], intuple[1] = intuple[1], intuple[0]
 	return intuple
 }
+
+// Reverse input slice
+func Reverseslice(inslice []float64) []float64 {
+	for l := 0; l < len(inslice)/2; l++ {
+		r := len(inslice) - 1 - l
+		temp := inslice[l]
+		inslice[l] = inslice[r]
+		inslice[r] = temp
+	}
+	return inslice
+}
