@@ -2,7 +2,6 @@
 package sortgen
 
 import (
-	"math"
 	"math/rand"
 	"time"
 
@@ -50,44 +49,47 @@ func Insertsort(inslice []float64) []float64 {
 // Mergesort is a dynamic top-level sorting function utilizing divide-and-conquer approach
 // where target array is recursively divided to its smallest parts (subarrays arrays of length
 // one) and then combined/merged to an ever-longer combined array until all of the subarrays
-// are not merged back but all in sorted order.
-func Mergesort(inslice []float64, p int, r int) []float64 {
-	//defer utilgen.Timetracker(time.Now(), "Mergesort")
-	var outslice []float64
-	if p < r {
-		q := int(math.Floor(float64((p + r) / 2)))
-		Mergesort(inslice, p, q)
-		Mergesort(inslice, q, r-1)
-		outslice = innermerge(inslice, p, q, r)
-	}
+// are not merged back but all in sorted order (http://austingwalters.com/merge-sort-in-go-golang/).
+func Mergesort(inslice []float64) []float64 {
+	defer utilgen.Timetracker(time.Now(), "Mergesort")
+	innerslice := make([]float64, len(inslice))
+	copy(innerslice, inslice)
+	outslice := msrunner(innerslice)
 	return outslice
 }
 
-func innermerge(inslice []float64, p int, q int, r int) []float64 {
-	n1 := q - p + 1
-	n2 := r - q
-	innerleft := make([]float64, n1+1)
-	innerright := make([]float64, n2+1)
-	for i := 0; i < n1; i++ {
-		innerleft[i] = inslice[p+i]
+func msrunner(inslice []float64) []float64 {
+	if len(inslice) < 2 {
+		return inslice
 	}
-	for j := 0; j < n2; j++ {
-		innerright[j] = inslice[q+j]
-	}
-	innerleft[n1] = math.MaxFloat64
-	innerright[n2] = math.MaxFloat64
-	ii := 0
-	jj := 0
-	for k := p; k < r; k++ {
-		if innerleft[ii] <= innerright[jj] {
-			inslice[k] = innerleft[ii]
-			ii++
+	l, r := mergesplit(inslice)
+	return innermerge(msrunner(l), msrunner(r))
+}
+
+func mergesplit(inslice []float64) ([]float64, []float64) {
+	q := len(inslice) / 2
+	return inslice[:q], inslice[q:]
+}
+
+func innermerge(innerleft, innerright []float64) []float64 {
+	s, l, r := len(innerleft)+len(innerright), 0, 0
+	innerslice := make([]float64, s, s)
+	for n := 0; n < s; n++ {
+		if l > len(innerleft)-1 && r <= len(innerright)-1 {
+			innerslice[n] = innerright[r]
+			r++
+		} else if r > len(innerright)-1 && l <= len(innerleft)-1 {
+			innerslice[n] = innerleft[l]
+			l++
+		} else if innerleft[l] > innerright[r] {
+			innerslice[n] = innerright[r]
+			r++
 		} else {
-			inslice[k] = innerright[jj]
-			jj++
+			innerslice[n] = innerleft[l]
+			l++
 		}
 	}
-	return inslice
+	return innerslice
 }
 
 // Heapsort uses the max-heap data structure and proceeds from the root node of the heap
@@ -106,6 +108,43 @@ func Heapsort(inslice []float64) []float64 {
 		datagen.Maxheapmaintain(&iheap, 0)
 	}
 	return iheap.Inslice
+}
+
+// Quicksort operates in a manner similar to mergesort but with the specific technique
+// used for partitioning the array during the divide step. Partitioning is based on the
+// selection of the pivot element around wich the partitioning takes place, i.e. all
+// elements smaller than the pivot are being moved to the left side of the pivot
+// element (http://stackoverflow.com/questions/15802890/idiomatic-quicksort-in-go).
+func Quicksort(inslice []float64) []float64 {
+	defer utilgen.Timetracker(time.Now(), "Quicksort")
+	outslice := make([]float64, len(inslice))
+	copy(outslice, inslice)
+	quicksortinner(outslice)
+	return outslice
+}
+
+func quicksortinner(inslice []float64) []float64 {
+	if len(inslice) < 2 {
+		return inslice
+	}
+	q := quickpartition(inslice)
+	quicksortinner(inslice[:q])
+	quicksortinner(inslice[q+1:])
+	return inslice
+}
+
+func quickpartition(inslice []float64) int {
+	pivot := rand.Int() % len(inslice)
+	l, r := 0, len(inslice)-1
+	inslice[pivot], inslice[r] = inslice[r], inslice[pivot]
+	for n := range inslice {
+		if inslice[n] < inslice[r] {
+			inslice[n], inslice[l] = inslice[l], inslice[n]
+			l++
+		}
+	}
+	inslice[l], inslice[r] = inslice[r], inslice[l]
+	return l
 }
 
 // Sortpermute performs randomization of input array elements by utilizing sorting

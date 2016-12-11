@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/fatih/color"
-	"github.com/paulidealiste/goalgs/datagen"
 	"github.com/paulidealiste/goalgs/rangen"
+	"github.com/paulidealiste/goalgs/sortgen"
 )
 
 func main() {
@@ -21,9 +21,12 @@ func main() {
 	// ssl := sortgen.Insertsort(tsl)
 	// color.Cyan("Insertsorted slice")
 	// fmt.Println(ssl)
-	// msl := sortgen.Mergesort(tsl, 0, len(tsl))
-	// color.Cyan("Mergesorted slice")
-	// fmt.Println(msl)
+	msl := sortgen.Mergesort(tsl)
+	color.Cyan("Mergesorted slice")
+	fmt.Println(msl)
+	qsl := sortgen.Quicksort(tsl)
+	color.Cyan("Quicksorted slice")
+	fmt.Println(qsl)
 	// qsl := sortgen.Heapsort(tsl)
 	// color.Cyan("Heapsorted slice")
 	// fmt.Println(qsl)
@@ -47,15 +50,15 @@ func main() {
 	// sss := extremegen.Extremediff(tsl)
 	// color.Cyan("Extreme differences between two elements of array")
 	// fmt.Println(sss)
-	color.Green("goalgs data structures")
-	ssd := datagen.Heapgen(tsl)
-	color.Cyan("Slice representation as max-heap (.inslice of the struct)")
-	fmt.Println(ssd)
-	yellowprint := color.New(color.FgHiYellow)
-	yellowprint.Println("Heap maintenance methods")
-	fmt.Println("Heap max (.Maximum):", ssd.Maximum())
-	_, errormax := ssd.Extractmax()
-	fmt.Println("Heap extract max (.Extractmax):", ssd, errormax)
-	ssd.Insert(45.95)
-	fmt.Println("Heap insert (.Insert):", ssd)
+	// color.Green("goalgs data structures")
+	// ssd := datagen.Heapgen(tsl)
+	// color.Cyan("Slice representation as max-heap (.inslice of the struct)")
+	// fmt.Println(ssd)
+	// yellowprint := color.New(color.FgHiYellow)
+	// yellowprint.Println("Heap maintenance methods")
+	// fmt.Println("Heap max (.Maximum):", ssd.Maximum())
+	// _, errormax := ssd.Extractmax()
+	// fmt.Println("Heap extract max (.Extractmax):", ssd, errormax)
+	// ssd.Insert(45.95)
+	// fmt.Println("Heap insert (.Insert):", ssd)
 }

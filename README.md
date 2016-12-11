@@ -11,6 +11,7 @@ ___________________________
   * Insertion sort
   * Merge sort
   * Heap sort
+  * Quick sort
   * Random permutation by sort
   * Random permutation in-place
 - Extremes    
