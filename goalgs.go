@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/fatih/color"
+	"github.com/paulidealiste/goalgs/datagen"
 	"github.com/paulidealiste/goalgs/rangen"
-	"github.com/paulidealiste/goalgs/sortgen"
 )
 
 func main() {
@@ -21,12 +21,12 @@ func main() {
 	// ssl := sortgen.Insertsort(tsl)
 	// color.Cyan("Insertsorted slice")
 	// fmt.Println(ssl)
-	msl := sortgen.Mergesort(tsl)
-	color.Cyan("Mergesorted slice")
-	fmt.Println(msl)
-	qsl := sortgen.Quicksort(tsl)
-	color.Cyan("Quicksorted slice")
-	fmt.Println(qsl)
+	// msl := sortgen.Mergesort(tsl)
+	// color.Cyan("Mergesorted slice")
+	// fmt.Println(msl)
+	// qsl := sortgen.Quicksort(tsl)
+	// color.Cyan("Quicksorted slice")
+	// fmt.Println(qsl)
 	// qsl := sortgen.Heapsort(tsl)
 	// color.Cyan("Heapsorted slice")
 	// fmt.Println(qsl)
@@ -61,4 +61,7 @@ func main() {
 	// fmt.Println("Heap extract max (.Extractmax):", ssd, errormax)
 	// ssd.Insert(45.95)
 	// fmt.Println("Heap insert (.Insert):", ssd)
+	bsd := datagen.Bstgen(tsl)
+	color.Cyan("Slice representation as a binary search tree")
+	fmt.Println(bsd)
 }

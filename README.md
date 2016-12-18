@@ -22,6 +22,7 @@ ___________________________
 - Data structures    
   * Max-heap
   * Max-heap maintenace methods (max, extractmax, increasekey, insert)
+  * Binary search tree (untested)
 
 #### Available utilities
   * Random numbers by Box-Muller transform    

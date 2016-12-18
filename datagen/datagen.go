@@ -15,6 +15,74 @@ type Heap struct {
 	Inslice  []float64
 }
 
+type Bst struct {
+	Bstsize    int
+	Rootnode   *Bstnode
+	Innerslice []float64
+	Inslice    []Bstnode
+}
+
+type Bstnode struct {
+	data       float64
+	leftchild  *Bstnode
+	rightchild *Bstnode
+	parent     *Bstnode
+}
+
+// Bstgen tries to transform input slice into a binary search tree representation
+// where each datum is reperesented by a node with a key which satisfies criteria
+// that key in left child is always smaller than the key of the parent while the
+// same key in the right child is always larger.
+func Bstgen(inslice []float64) Bst {
+	defer utilgen.Timetracker(time.Now(), "Bstgen")
+	innerslice := make([]float64, len(inslice))
+	copy(innerslice, inslice)
+	var bstlist []Bstnode
+	innerbst := Bst{0, nil, innerslice, bstlist}
+	bstgencreate(&innerbst)
+	return innerbst
+}
+
+func bstgencreate(inbst *Bst) {
+	for i := 0; i < len(inbst.Innerslice)-1; i++ {
+		insertnode := Bstnode{inbst.Innerslice[i], nil, nil, nil}
+		inbst.Insert(&insertnode)
+	}
+}
+
+// Binary search tree maintenance methods
+
+// Bst.Insert() acts by inserting new Bstnode element at appropriate position
+// so that basic premises of the binary search tree are maintained
+func (inbst *Bst) Insert(insertnode *Bstnode) {
+	if inbst.Rootnode == nil {
+		inbst.Rootnode = insertnode
+	} else {
+		currentRoot := inbst.Rootnode
+		for {
+			if insertnode.data > currentRoot.data {
+				if currentRoot.rightchild == nil {
+					currentRoot.rightchild = insertnode
+					inbst.Inslice = append(inbst.Inslice, *currentRoot)
+					inbst.Bstsize++
+					break
+				} else {
+					currentRoot = currentRoot.rightchild
+				}
+			} else {
+				if currentRoot.leftchild == nil {
+					currentRoot.leftchild = insertnode
+					inbst.Inslice = append(inbst.Inslice, *currentRoot)
+					inbst.Bstsize++
+					break
+				} else {
+					currentRoot = currentRoot.leftchild
+				}
+			}
+		}
+	}
+}
+
 // Heapgen generates a max-heap data structure which is a tree-like representation
 // of the input array where each value of a parent element is greater than that of
 // a child.

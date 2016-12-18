@@ -35,6 +35,13 @@ func Gorpa(n int) []int { //TODO: re-implement by hand
 	return randomer.Perm(n)
 }
 
+// Samplerint returns random integer in [0,n] range with new seed upon each call
+func Simplerint(n int) int {
+	source := rand.NewSource(time.Now().UnixNano())
+	randomer := rand.New(source)
+	return randomer.Intn(n)
+}
+
 // Boxmullerrands is a simple implementation of Box-Muller algorithm for generating
 // normally distributed random numbers.
 func Boxmullerrands(fixed int, mean float64, sigma float64) []float64 {
