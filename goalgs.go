@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/fatih/color"
-	"github.com/paulidealiste/goalgs/datagen"
 	"github.com/paulidealiste/goalgs/rangen"
+	"github.com/paulidealiste/goalgs/utilgen"
 )
 
 func main() {
@@ -61,7 +61,10 @@ func main() {
 	// fmt.Println("Heap extract max (.Extractmax):", ssd, errormax)
 	// ssd.Insert(45.95)
 	// fmt.Println("Heap insert (.Insert):", ssd)
-	bsd := datagen.Bstgen(tsl)
-	color.Cyan("Slice representation as a binary search tree")
-	fmt.Println(bsd)
+	// bsd := datagen.Bstgen(tsl)
+	// color.Cyan("Slice representation as a binary search tree")
+	// fmt.Println(bsd)
+	randSlice := utilgen.RandomArraySubset(tsl, 50)
+	color.Green("Random array subset")
+	fmt.Println(randSlice)
 }

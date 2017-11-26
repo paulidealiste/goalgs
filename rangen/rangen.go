@@ -42,6 +42,12 @@ func Simplerint(n int) int {
 	return randomer.Intn(n)
 }
 
+// RandIntegerInRange returns random integer in the supplied range
+func RandIntegerInRange(min int, max int) int {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(max-min) + min
+}
+
 // Boxmullerrands is a simple implementation of Box-Muller algorithm for generating
 // normally distributed random numbers.
 func Boxmullerrands(fixed int, mean float64, sigma float64) []float64 {

@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"time"
+
+	"github.com/paulidealiste/goalgs/rangen"
 )
 
 // Simple timetracker function called with defer at the onset of the function.
@@ -64,4 +66,23 @@ func Reverseslice(inslice []float64) []float64 {
 		inslice[r] = temp
 	}
 	return inslice
+}
+
+// Random array subset with percantage sample size - array wrap
+func RandomArraySubset(inslice []float64, percsample int) []float64 {
+	sampsizefloat := float64(len(inslice)) * float64(percsample) / 100
+	if sampsizefloat < 1 {
+		err := errors.New("Input array has too few elements")
+		panic(err)
+	}
+	sampsize := int(sampsizefloat)
+	randtarget := rangen.RandIntegerInRange(0, len(inslice)-1)
+	fmt.Println(len(inslice), randtarget, sampsize)
+	if randtarget+sampsize > len(inslice) {
+		diff := (randtarget + sampsize) - len(inslice)
+		arrEnd := inslice[randtarget:len(inslice)]
+		arrStart := inslice[0:diff]
+		return append(arrEnd, arrStart...)
+	}
+	return inslice[randtarget : randtarget+sampsize]
 }
